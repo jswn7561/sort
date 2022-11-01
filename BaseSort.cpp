@@ -307,7 +307,7 @@ void BaseSort::Run() {
     for (int j = 0; j < 6; j++) {
         vector<int> v1(n[j], 0);
         srand((unsigned) time(NULL));
-        for (int i = 0; i < n[0]; i++) {
+        for (int i = 0; i < n[j]; i++) {
             v1[i] = rand() % 50000 + 1; // rand()函数在stdlib.h头文件中
         }
         vector<int> v2 = v1;
