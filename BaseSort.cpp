@@ -3,8 +3,11 @@
 //
 
 #include "BaseSort.h"
-#include "iostream"
+#include <stdlib.h>
+#include <time.h>
+#include <iostream>
 
+using namespace std;
 /**
  * 选择排序
  * 时间复杂度：O(n^2)
@@ -22,7 +25,7 @@ void BaseSort::SelectSort(vector<int> &v) {
             }
         }
         if (min != i) {
-            Swap(&v[min], &v[i]);
+            swap(v[min], v[i]);
         }
     }
 }
@@ -46,25 +49,14 @@ void BaseSort::BinarySelectSort(vector<int> &v) {
             }
         }
         if (min != i)
-            Swap(&v[min], &v[i]);
+            swap(v[min], v[i]);
 
         if (max == i)
             max = min;
 
         if (max != n - i - 1)
-            Swap(&v[max], &v[n - i - 1]);
+            swap(v[max], v[n - i - 1]);
     }
-}
-
-/**
- * 交换元素
- * @param p
- * @param q
- */
-void BaseSort::Swap(int *p, int *q) {
-    int temp = *p;
-    *p = *q;
-    *q = temp;
 }
 
 /**
@@ -170,17 +162,17 @@ void BaseSort::QuickThreeWaySort(vector<int> &v, int low, int high) {
     int i = low + 1;
     while (i < gt) {
         if (v[i] < pivot) { // 当前位置元素小于pivot时，则将当前位置元素与等于pivot部分的第一个元素进行交换
-            Swap(&v[i], &v[lt + 1]);
+            swap(v[i], v[lt + 1]);
             i++;
             lt++;
         } else if (v[i] > pivot) { // 当前位置元素大于pivot时，将当前位置元素与大于pivot部分的前一个元素进行交换
-            Swap(&v[i], &v[gt - 1]);
+            swap(v[i], v[gt - 1]);
             gt--;
         } else {
             i++;
         }
     }
-    Swap(&v[low], &v[lt]);
+    swap(v[low], v[lt]);
 
     QuickThreeWaySort(v, low, lt - 1);
     QuickThreeWaySort(v, gt, high);
@@ -215,7 +207,7 @@ void BaseSort::ShellExchangeSort(vector<int> &v) {
         for (int j = gap; j < n; j++) {
             for (int k = j; k >= 0; k -= gap) {
                 if (k - gap >= 0 && v[k] < v[k - gap]) {
-                    Swap(&v[k], &v[k - gap]);
+                    swap(v[k], v[k - gap]);
                 }
             }
         }
@@ -310,38 +302,85 @@ void BaseSort::RadixBucketSort(vector<int> &v) {
 }
 
 
-void BaseSort::Run(vector<int> &v, sort_type type) {
-    switch (type) {
-        case SELECT:
-            SelectSort(v);
-            break;
-        case BINARY_SELECT:
-            BinarySelectSort(v);
-            break;
-        case MERGE:
-            MergeSort(v);
-            break;
-        case MERGE_ITERATE:
-            MergeIterateSort(v);
-            break;
-        case QUICK:
-            QuickSort(v);
-            break;
-        case QUICK_THREEWAY:
-            QuickThreeWaySort(v);
-            break;
-        case SHELL:
-            ShellSort(v);
-            break;
-        case SHELL_EXCHANGE:
-            ShellExchangeSort(v);
-            break;
-        case RADIX:
-            RadixSort(v);
-            break;
-        case RADIX_BUCKET:
-            RadixBucketSort(v);
-            break;
+void BaseSort::Run() {
+    int n[] = {1000, 5000, 10000, 50000, 80000, 100000};
+    for (int j = 0; j < 6; j++) {
+        vector<int> v1(n[j], 0);
+        srand((unsigned) time(NULL));
+        for (int i = 0; i < n[0]; i++) {
+            v1[i] = rand() % 50000 + 1; // rand()函数在stdlib.h头文件中
+        }
+        vector<int> v2 = v1;
+        vector<int> v3 = v1;
+        vector<int> v4 = v1;
+        vector<int> v5 = v1;
+        vector<int> v6 = v1;
+        vector<int> v7 = v1;
+        vector<int> v8 = v1;
+        vector<int> v9 = v1;
+        vector<int> v10 = v1;
+        cout <<  "规模为大小为" << n[j] << "各排序耗时" << endl;
+        clock_t startTime, endTime;
+        // 选择排序
+        startTime = clock();
+        BaseSort::SelectSort(v1);
+        endTime = clock();
+        cout <<  "选择排序耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+
+        // 二元选择排序
+        startTime = clock();
+        BaseSort::BinarySelectSort(v2);
+        endTime = clock();
+        cout <<  "二元选择排序耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+
+        // 归并排序_递归法
+        startTime = clock();
+        BaseSort::MergeSort(v3);
+        endTime = clock();
+        cout <<  "归并排序_递归法耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+
+        // 归并排序_迭代法
+        startTime = clock();
+        BaseSort::MergeIterateSort(v4);
+        endTime = clock();
+        cout <<  "归并排序_迭代法耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+
+        // 快速排序
+        startTime = clock();
+        BaseSort::QuickSort(v5);
+        endTime = clock();
+        cout <<  "快速排序耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+
+        // 三路快速排序
+        startTime = clock();
+        BaseSort::QuickThreeWaySort(v6);
+        endTime = clock();
+        cout <<  "快速排序耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+
+        // 希尔排序_移位法
+        startTime = clock();
+        BaseSort::ShellSort(v7);
+        endTime = clock();
+        cout <<  "希尔排序_移位法耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+
+        // 希尔排序_交换法
+        startTime = clock();
+        BaseSort::ShellExchangeSort(v8);
+        endTime = clock();
+        cout <<  "希尔排序_交换法耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+
+        // 基数排序_计数
+        startTime = clock();
+        BaseSort::RadixSort(v9);
+        endTime = clock();
+        cout <<  "基数排序_计数耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+
+        // 基数排序_桶
+        startTime = clock();
+        BaseSort::RadixBucketSort(v10);
+        endTime = clock();
+        cout <<  "基数排序_桶耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+
     }
 }
 
