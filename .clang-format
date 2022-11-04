@@ -1,0 +1,20 @@
+---
+Language: Cpp
+BasedOnStyle: Google
+IndentWidth: 4
+ColumnLimit: 150
+AccessModifierOffset: -4
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakTemplateDeclarations: true
+Cpp11BracedListStyle: false
+DerivePointerAlignment: false
+IndentCaseLabels: false
+IndentPPDirectives: AfterHash
+PointerAlignment: Left
+SpaceAfterTemplateKeyword: true
+IncludeBlocks: Preserve
+...

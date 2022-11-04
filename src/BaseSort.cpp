@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by Edith Wang on 2022/10/20.
 //
 
@@ -17,9 +17,17 @@ using namespace std;
 void BaseSort::SelectSort(vector<int> &v) {
     int n = v.size();
     if (n == 0) return;
-    for (int i = 0; i < n - 1; i++) {
+    SelectSort(v, 0, n - 1);
+}
+
+void BaseSort::SelectSort(vector<int>& v, int begin, int end) {
+    if (begin >= end) {
+        return;
+    }
+
+    for (int i = begin; i < end; i++) {
         int min = i;
-        for (int j = i + 1; j < n; j++) {
+        for (int j = i + 1; j <= end; j++) {
             if (v[j] < v[min]) {
                 min = j;
             }
@@ -38,13 +46,23 @@ void BaseSort::SelectSort(vector<int> &v) {
 void BaseSort::BinarySelectSort(vector<int> &v) {
     int n = v.size();
     if (n == 0) return;
-    for (int i = 0; i < n / 2; i++) {
+    BinarySelectSort(v, 0, n - 1);
+}
+
+void BaseSort::BinarySelectSort(vector<int>& v, int begin, int end) {
+    if (begin >= end) {
+        return;
+    }
+
+    const auto interval = end - begin + 1;
+    for (int i = begin, len = begin + interval / 2; i < len; i++) {
         int min = i;
         int max = i;
-        for (int j = i + 1; j < n - i; j++) {
+        const auto newEnd = end - i + begin;
+        for (int j = i + 1; j <= newEnd; j++) {
             if (v[j] < v[min]) {
                 min = j;
-            } else if (v[j] > v[max]){
+            } else if (v[j] > v[max]) {
                 max = j;
             }
         }
@@ -54,8 +72,8 @@ void BaseSort::BinarySelectSort(vector<int> &v) {
         if (max == i)
             max = min;
 
-        if (max != n - i - 1)
-            swap(v[max], v[n - i - 1]);
+        if (max != newEnd)
+            swap(v[max], v[newEnd]);
     }
 }
 
@@ -64,12 +82,16 @@ void BaseSort::BinarySelectSort(vector<int> &v) {
  * @param vector<int> v
  */
 void BaseSort::MergeSort(vector<int> &v) {
-    if (v.size() == 0) return;
-    MergeSort(v, 0, v.size() - 1);
+    int n = v.size();
+    if (n == 0) return;
+    MergeSort(v, 0, n - 1);
 }
 
 void BaseSort::MergeSort(vector<int> &v, int begin, int end) {
-    if (begin == end) return;
+    if (begin >= end) {
+        return;
+    }
+
     int mid = begin + (end - begin) / 2;
     MergeSort(v, begin, mid);
     MergeSort(v, mid + 1, end);
@@ -83,10 +105,18 @@ void BaseSort::MergeSort(vector<int> &v, int begin, int end) {
 void BaseSort::MergeIterateSort(vector<int> &v) {
     int n = v.size();
     if (n == 0) return;
+    MergeIterateSort(v, 0, n - 1);
+}
 
-    for (int seg = 1; seg < n; seg += seg) {
-        for (int start = 0; start < n - seg; start += seg + seg) {
-            Merge(v, start, start + seg - 1, min(start + seg + seg - 1, n - 1));
+void BaseSort::MergeIterateSort(vector<int>& v, int begin, int end) {
+    if (begin >= end) {
+        return;
+    }
+
+    const auto interval = end - begin + 1;
+    for (int seg = 1; seg < interval; seg += seg) {
+        for (int start = begin, len = interval - seg + begin; start < len; start += seg + seg) {
+            Merge(v, start, start + seg - 1, min(start + seg + seg - 1, end));
         }
     }
 }
@@ -184,11 +214,21 @@ void BaseSort::QuickThreeWaySort(vector<int> &v, int low, int high) {
  */
 void BaseSort::ShellSort(vector<int> &v) {
     int n = v.size();
-    for (int gap = n / 2; gap > 0; gap = gap / 2) {
-        for (int i = gap; i < n; i++) {
+    if (n == 0) return;
+    ShellSort(v, 0, n - 1);
+}
+
+void BaseSort::ShellSort(vector<int>& v, int begin, int end) {
+    if (begin >= end) {
+        return;
+    }
+
+    const auto interval = end - begin + 1;
+    for (int gap = interval / 2; gap > 0; gap = gap / 2) {
+        for (int i = begin + gap; i <= end; i++) {
             int j = i;
             int temp = v[j];
-            while (j - gap >= 0 && v[j - gap] > temp) {
+            while (j - gap >= begin && v[j - gap] > temp) {
                 v[j] = v[j - gap];
                 j = j - gap;
             }
@@ -203,25 +243,46 @@ void BaseSort::ShellSort(vector<int> &v) {
  */
 void BaseSort::ShellExchangeSort(vector<int> &v) {
     int n = v.size();
-    for (int gap = n / 2; gap > 0; gap = gap / 2) {
-        for (int j = gap; j < n; j++) {
-            for (int k = j; k >= 0; k -= gap) {
-                if (k - gap >= 0 && v[k] < v[k - gap]) {
+    if (n == 0) return;
+    ShellExchangeSort(v, 0, n - 1);
+}
+
+void BaseSort::ShellExchangeSort(vector<int>& v, int begin, int end) {
+    if (begin >= end) {
+        return;
+    }
+
+    const auto interval = end - begin + 1;
+    for (int gap = interval / 2; gap > 0; gap = gap / 2) {
+        for (int j = begin + gap; j <= end; j++) {
+            for (int k = j; k >= begin; k -= gap) {
+                if (k - gap >= begin && v[k] < v[k - gap]) {
                     swap(v[k], v[k - gap]);
                 }
             }
         }
     }
 }
+
 /**
  * 基数排序
  * @param vector<int> v
  */
 void BaseSort::RadixSort(vector<int> &v) {
     int n = v.size();
-    int d = MaxBit(v, n);
-    int *tmp = new int[n];
-    int *count = new int[10]; //计数器
+    if (n == 0) return;
+    RadixSort(v, 0, n - 1);
+}
+
+void BaseSort::RadixSort(vector<int>& v, int begin, int end) {
+    if (begin >= end) {
+        return;
+    }
+
+    const auto interval = end - begin + 1;
+    int d = MaxBit(v, begin, end);
+    int* tmp = new int[interval];
+    int* count = new int[10];  //计数器
     int i, j, k;
     int radix = 1;
     //进行d次排序
@@ -230,7 +291,7 @@ void BaseSort::RadixSort(vector<int> &v) {
         for (j = 0; j < 10; j++)
             count[j] = 0;
         //统计每个桶中的记录数
-        for (j = 0; j < n; j++) {
+        for (j = begin; j <= end; j++) {
             k = (v[j] / radix) % 10;
             count[k]++;
         }
@@ -238,19 +299,19 @@ void BaseSort::RadixSort(vector<int> &v) {
         for (j = 1; j < 10; j++)
             count[j] += count[j - 1];
         //将所有桶中记录依次收集到tmp中
-        for (j = n - 1; j >= 0; j--) {
+        for (j = end; j >= begin; j--) {
             k = (v[j] / radix) % 10;
             tmp[count[k] - 1] = v[j];
             count[k]--;
         }
         //将临时数组的内容复制到data中
-        for (j = 0; j < n; j++)
-            v[j] = tmp[j];
+        for (j = begin; j <= end; j++)
+            v[j] = tmp[j - begin];
         //位数加1
         radix = radix * 10;
     }
-    delete[]tmp;
-    delete[]count;
+    delete[] tmp;
+    delete[] count;
 }
 
 /**
@@ -258,12 +319,13 @@ void BaseSort::RadixSort(vector<int> &v) {
  * @param v
  * @param n
  */
-int BaseSort::MaxBit(vector<int> &v, int n) {
-    int maxData = v[0];           // 最大数
-    for (int i = 1; i < n; i++) {
+int BaseSort::MaxBit(vector<int> &v, int begin, int end) {
+    int maxData = v[begin];           // 最大数
+    for (int i = begin + 1; i <= end; i++) {
         if (maxData < v[i])
             maxData = v[i];
     }
+
     int d = 1;
     int p = 10;
     while (maxData >= p) {
@@ -276,9 +338,17 @@ int BaseSort::MaxBit(vector<int> &v, int n) {
 void BaseSort::RadixBucketSort(vector<int> &v) {
     int n = v.size();
     if (n == 0) return;
+    RadixBucketSort(v, 0, n - 1);
+}
+
+void BaseSort::RadixBucketSort(vector<int>& v, int begin, int end) {
+    if (begin >= end) {
+        return;
+    }
+
     // 寻找最大值
-    int max = v[0];
-    for (int i = 0; i < n; ++i) {
+    int max = v[begin];
+    for (int i = begin; i <= end; ++i) {
         if (v[i] > max)
             max = v[i];
     }
@@ -288,11 +358,11 @@ void BaseSort::RadixBucketSort(vector<int> &v) {
 
     for (int i = 1; max / i > 0; i *= 10) {
         // 根据位数上的数字将元素放入对应的桶中
-        for (int j = 0; j < n; j++) {
+        for (int j = begin; j <= end; j++) {
             bucket[(v[j] / i) % 10].push_back(v[j]);
         }
         int j, k;
-        for (j = k = 0; j < 10; j++) {
+        for (j = 0, k = begin; j < 10; j++) {
             while (!bucket[j].empty()) {
                 v[k++] = bucket[j].front();
                 bucket[j].pop_front();
