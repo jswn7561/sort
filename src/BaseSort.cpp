@@ -1,13 +1,7 @@
-﻿//
-// Created by Edith Wang on 2022/10/20.
-//
-
+﻿#include <iostream>
 #include "BaseSort.h"
-#include <stdlib.h>
-#include <time.h>
-#include <iostream>
+#include "Utils.h"
 
-using namespace std;
 /**
  * 选择排序
  * 时间复杂度：O(n^2)
@@ -122,7 +116,7 @@ void BaseSort::MergeIterateSort(vector<int>& v, int begin, int end) {
 }
 
 void BaseSort::Merge(vector<int> &v, const int left, const int mid, const int right) {
-    int *temp = new int[right - left + 1]; // 辅助空间
+    vector<int> temp(right - left + 1); // 辅助空间
     int tempIndex = 0; // 辅助空间index
     int leftIndex = left; //左侧数组指针
     int rightIndex = mid + 1; //右侧数组指针
@@ -141,8 +135,6 @@ void BaseSort::Merge(vector<int> &v, const int left, const int mid, const int ri
     for (int i = 0; i < right - left + 1; i++) {
         v[left + i] = temp[i];
     }
-
-    delete[]temp; // 释放内存
 }
 
 /**
@@ -281,8 +273,9 @@ void BaseSort::RadixSort(vector<int>& v, int begin, int end) {
 
     const auto interval = end - begin + 1;
     int d = MaxBit(v, begin, end);
-    int* tmp = new int[interval];
-    int* count = new int[10];  //计数器
+
+    vector<int> tmp(interval);
+    vector<int> count(10); //计数器
     int i, j, k;
     int radix = 1;
     //进行d次排序
@@ -310,8 +303,6 @@ void BaseSort::RadixSort(vector<int>& v, int begin, int end) {
         //位数加1
         radix = radix * 10;
     }
-    delete[] tmp;
-    delete[] count;
 }
 
 /**
@@ -376,7 +367,7 @@ void BaseSort::Run() {
     int n[] = {1000, 5000, 10000, 50000, 80000, 100000};
     for (int j = 0; j < 6; j++) {
         vector<int> v1(n[j], 0);
-        srand((unsigned) time(NULL));
+        srand((unsigned) time(nullptr));
         for (int i = 0; i < n[j]; i++) {
             v1[i] = rand() % 50000 + 1; // rand()函数在stdlib.h头文件中
         }
@@ -389,68 +380,68 @@ void BaseSort::Run() {
         vector<int> v8 = v1;
         vector<int> v9 = v1;
         vector<int> v10 = v1;
-        cout <<  "规模为大小为" << n[j] << "各排序耗时" << endl;
+        printf("The time consuming of sorting \033[0m\033[1;31m%d\033[0m numbers:\n", n[j]);
         clock_t startTime, endTime;
         // 选择排序
         startTime = clock();
         BaseSort::SelectSort(v1);
         endTime = clock();
-        cout <<  "选择排序耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+        printf("Selection sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False");
 
         // 二元选择排序
         startTime = clock();
         BaseSort::BinarySelectSort(v2);
         endTime = clock();
-        cout <<  "二元选择排序耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+        printf("Binary selection sort：\033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v2) ? "True" : "False");
 
         // 归并排序_递归法
         startTime = clock();
         BaseSort::MergeSort(v3);
         endTime = clock();
-        cout <<  "归并排序_递归法耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+        printf("Merging sort(recursion)：\033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v3) ? "True" : "False");
 
         // 归并排序_迭代法
         startTime = clock();
         BaseSort::MergeIterateSort(v4);
         endTime = clock();
-        cout <<  "归并排序_迭代法耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+        printf("Merging sort(iteration)：\033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v4) ? "True" : "False");
 
         // 快速排序
         startTime = clock();
         BaseSort::QuickSort(v5);
         endTime = clock();
-        cout <<  "快速排序耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+        printf("Quick sort：\033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v5) ? "True" : "False");
 
         // 三路快速排序
         startTime = clock();
         BaseSort::QuickThreeWaySort(v6);
         endTime = clock();
-        cout <<  "快速排序耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+        printf("Quick three way sort：\033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v6) ? "True" : "False");
 
         // 希尔排序_移位法
         startTime = clock();
         BaseSort::ShellSort(v7);
         endTime = clock();
-        cout <<  "希尔排序_移位法耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+        printf("Shell sort(shift)：\033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v7) ? "True" : "False");
 
         // 希尔排序_交换法
         startTime = clock();
         BaseSort::ShellExchangeSort(v8);
         endTime = clock();
-        cout <<  "希尔排序_交换法耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+        printf("Shell sort(exchange)：\033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v8) ? "True" : "False");
 
         // 基数排序_计数
         startTime = clock();
         BaseSort::RadixSort(v9);
         endTime = clock();
-        cout <<  "基数排序_计数耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
+        printf("Radix sort(MSD)：\033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v9) ? "True" : "False");
 
         // 基数排序_桶
         startTime = clock();
         BaseSort::RadixBucketSort(v10);
         endTime = clock();
-        cout <<  "基数排序_桶耗时：" << (double) (endTime - startTime) / CLOCKS_PER_SEC << endl;
-
+        printf("Radix sort(LSD)：\033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v10) ? "True" : "False");
+        printf("\n");
     }
 }
 
