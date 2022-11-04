@@ -3,5 +3,6 @@
 
 int main()
 {
+    BaseSort::Run();
     DistributedSort::Run();
 }
