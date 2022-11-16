@@ -1,7 +1,6 @@
 #include <vector>
 #include <thread>
 #include <future>
-#include <iostream>
 #include "DistributedSort.h"
 #include "Utils.h"
 #include "BaseSort.h"
@@ -65,11 +64,17 @@ void DistributedSort::Run() {
     printf("\nDistributedSort:\n");
     vector<int> nums(2000000);
     Utils::InitVector(nums, 1000000);
+    std::clock_t startTime = clock();
     SyncSort(nums);
-    printf("The result of sorting %lld numbers using the synchronous sort method is %s\n", nums.size(), Utils::VerifySort(nums) ? "true" : "false");
+    std::clock_t endTime = clock();
+    printf("The result of sorting %lld numbers using the synchronous sort method is %s. Time spent: %fs.\n", nums.size(),
+           Utils::VerifySort(nums) ? "true" : "false", static_cast<double>(endTime - startTime) / CLOCKS_PER_SEC);
 
     Utils::InitVector(nums, 1000000);
+    startTime = clock();
     auto f = AsyncSort(nums);
     f.wait();
-    printf("The result of sorting %lld numbers using the asynchronous sort method is %s\n", nums.size(), Utils::VerifySort(nums) ? "true" : "false");
+    endTime = clock();
+    printf("The result of sorting %lld numbers using the asynchronous sort method is %s. Time spent: %fs\n", nums.size(),
+           Utils::VerifySort(nums) ? "true" : "false", static_cast<double>(endTime - startTime) / CLOCKS_PER_SEC);
 }
