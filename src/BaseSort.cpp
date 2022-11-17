@@ -201,7 +201,7 @@ void BaseSort::QuickThreeWaySort(vector<int> &v, int low, int high) {
 }
 
 /**
- * 希尔排序_移位法
+ * 希尔排序_位移法
  * @param vector<int> v
  */
 void BaseSort::ShellSort(vector<int> &v) {
@@ -336,7 +336,6 @@ void BaseSort::RadixBucketSort(vector<int>& v, int begin, int end) {
     if (begin >= end) {
         return;
     }
-
     // 寻找最大值
     int max = v[begin];
     for (int i = begin; i <= end; ++i) {
