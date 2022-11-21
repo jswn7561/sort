@@ -363,6 +363,7 @@ void BaseSort::RadixBucketSort(vector<int>& v, int begin, int end) {
 
 
 void BaseSort::Run() {
+    printf("BaseSort:\n");
     int n[] = {1000, 5000, 10000, 50000, 80000, 100000};
     for (int j = 0; j < 6; j++) {
         vector<int> v1(n[j], 0);

@@ -41,7 +41,7 @@ void BigValueSort::MergeSort(std::vector<string>& v, int begin, int end){
 
 void BigValueSort::Merge(std::vector<string>& v, const int begin, const int mid, const int end){
     vector<string> tmp(end - begin + 1);
-    int i = begin, j = mid + 1, k = begin;
+    int i = begin, j = mid + 1, k = 0;
     while(i <= mid && j <= end){
         if (!Utils::Compare(v, i, j)) {
             tmp[k++] = v[i++];
@@ -56,8 +56,8 @@ void BigValueSort::Merge(std::vector<string>& v, const int begin, const int mid,
     while(j <= end){
         tmp[k++] = v[j++];
     }
-    for(k = begin; k <= end; k++){
-        v[k] = tmp[k];
+    for(int i = 0, len = end - begin + 1; i < len; i++){
+        v[begin + i] = tmp[i];
     }
 }
 
@@ -176,26 +176,30 @@ void BigValueSort::RadixSort(std::vector<string>& v, int DataNum, int DigitIdx){
 }
 
 void BigValueSort::Run() {
-    int DataNum = 20;
+    printf("BigValueSort:\n");
+    int DataNum = 2000;
     int DigitNum = 100;
-    string str[20]; 
+    vector<string> str(DataNum); 
     // 生成DataNum个[-10^100, 10^100]范围内随机数
     for(int i = 0; i < DataNum; i++){
+        string item = "";
         // 生成符号位
         if(rand() % 2){
-            str[i] = '-';
+            item = "-";
         }
         int m = rand() % DigitNum + 1;
         // 最高位非0
         string a = to_string(rand() % 9 + 1); 
-        str[i] += a;
+        item += a;
         for(int j = 2; j <= m ; j++){
             a = to_string(rand() % 10);
-            str[i] += a;
+            item += a;
         }
+
+        str[i] = item;
     }
 
-    vector<string> v0(str, str + DataNum);
+    vector<string> v0(str);
     vector<string> v1 = v0;
     vector<string> v2 = v0;
     vector<string> v3 = v0;
@@ -203,24 +207,28 @@ void BigValueSort::Run() {
     vector<string> v5 = v0;
     printf("The time consuming of sorting \033[0m\033[1;31m%d\033[0m numbers:\n", DataNum);
     clock_t startTime, endTime;
-    startTime = clock();
     // 选择排序
+    startTime = clock();
     BigValueSort::SelectSort(v1);
     endTime = clock();
     printf("Select sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False");
     // 归并排序
+    startTime = clock();
     BigValueSort::MergeSort(v2);
     endTime = clock();
     printf("Merge sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False");
     // 快速排序
+    startTime = clock();
     BigValueSort::QuickSort(v3);
     endTime = clock();
     printf("Quick sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False");
     // 希尔排序
+    startTime = clock();
     BigValueSort::ShellSort(v4);
     endTime = clock();
     printf("Shell sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False"); 
     // 基数排序
+    startTime = clock();
     BigValueSort::RadixSort(v5);
     endTime = clock();
     printf("Radix sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False");  
