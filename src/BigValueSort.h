@@ -1,9 +1,10 @@
-#include <vector>
+﻿#include <vector>
 #include <list>
+#include <string>
 
 using namespace std;
 
-class BigValueSort{
+class BigValueSort {
 public:
     static void Run();
     // 选择排序

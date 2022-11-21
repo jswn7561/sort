@@ -1,19 +1,19 @@
-#include <iostream>
-#include "BigValueSort.h"
+﻿#include <iostream>
 #include "Utils.h"
+#include "BigValueSort.h"
 
 // 选择排序
-void BigValueSort::SelectSort(std::vector<string>& v){
+void BigValueSort::SelectSort(std::vector<string>& v) {
     int n = v.size();
     if(n == 0) return;
     SelectSort(v, n);
 }
 
-void BigValueSort::SelectSort(std::vector<string>& v, int DataNum){
+void BigValueSort::SelectSort(std::vector<string>& v, int DataNum) {
     for(int i = 0; i < DataNum - 1; i++){
         int min = i;
         for(int j = i + 1; j < DataNum; j++){
-            if(Utils::compare(v, min, j)){
+            if (Utils::Compare(v, min, j)) {
                 min = j;
             }
         }
@@ -43,7 +43,7 @@ void BigValueSort::Merge(std::vector<string>& v, const int begin, const int mid,
     vector<string> tmp(end - begin + 1);
     int i = begin, j = mid + 1, k = begin;
     while(i <= mid && j <= end){
-        if(!Utils::compare(v, i, j)){
+        if (!Utils::Compare(v, i, j)) {
             tmp[k++] = v[i++];
         }
         else{
@@ -81,7 +81,7 @@ int BigValueSort::Partition(std::vector<string>& v, int begin, int end){
     int i = begin - 1, pivot = end;
     for(int j = begin; j < end; j++){
         // s[i]及之前元素都小于s[p]
-        if(!Utils::compare(v, j, pivot)){
+        if (!Utils::Compare(v, j, pivot)) {
             i++;
             swap(v[i], v[j]);
         }
@@ -107,7 +107,7 @@ void BigValueSort::ShellSort(std::vector<string>& v, int DataNum){
             for(int j  = i + d; j < DataNum; j += d){
                 int k = j;
                 // 如果后面元素比前面元素大，则交换
-                while(k > i && Utils::compare(v, k - d, k)){
+                while (k > i && Utils::Compare(v, k - d, k)) {
                     swap(v[k - d], v[k]);
                     k -= d;
                 }
@@ -175,10 +175,10 @@ void BigValueSort::RadixSort(std::vector<string>& v, int DataNum, int DigitIdx){
     }
 }
 
-void BigValueSort::Run(){
+void BigValueSort::Run() {
     int DataNum = 20;
     int DigitNum = 100;
-    string str[DataNum]; 
+    string str[20]; 
     // 生成DataNum个[-10^100, 10^100]范围内随机数
     for(int i = 0; i < DataNum; i++){
         // 生成符号位
@@ -194,6 +194,7 @@ void BigValueSort::Run(){
             str[i] += a;
         }
     }
+
     vector<string> v0(str, str + DataNum);
     vector<string> v1 = v0;
     vector<string> v2 = v0;

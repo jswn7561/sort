@@ -1,9 +1,9 @@
-#include <cstdlib>
+﻿#include <cstdlib>
 #include <ctime>
 #include "Utils.h"
 
 // 字符串比较：如果v[i] > v[j], 返回true
-bool Utils::compare(std::vector<std::string>& v, int i, int j){
+bool Utils::Compare(std::vector<std::string>& v, int i, int j){
     int i_len = v[i].length(), j_len = v[j].length();
     // 判断正负号
     // 若v[i]为正数, v[j]为负数
@@ -41,7 +41,7 @@ bool Utils::VerifySort(std::vector<int>& nums) {
     return VerifySort(nums, 0, nums.size() - 1);
 }
 
-bool Utils::VerifySort(std::vector<string>& nums) {
+bool Utils::VerifySort(std::vector<std::string>& nums) {
     return VerifySort(nums, 0, nums.size() - 1);
 }
 
@@ -54,9 +54,9 @@ bool Utils::VerifySort(std::vector<int>& nums, int begin, int end) {
     return true;
 }
 
-bool Utils::VerifySort(std::vector<string>& nums, int begin, int end) {
+bool Utils::VerifySort(std::vector<std::string>& nums, int begin, int end) {
     for (int i = begin + 1; i <= end; i++) {
-        if (compare(nums, i - 1, i)) {
+        if (Compare(nums, i - 1, i)) {
             return false;
         }
     }

@@ -5,6 +5,6 @@
 int main()
 {
     BaseSort::Run();
-    BigValueSort::Run();
+    //BigValueSort::Run();
     DistributedSort::Run();
 }
