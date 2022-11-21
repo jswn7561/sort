@@ -41,13 +41,16 @@ bool Utils::VerifySort(std::vector<int>& nums) {
     return VerifySort(nums, 0, nums.size() - 1);
 }
 
+bool Utils::VerifySort(std::vector<string>& nums) {
+    return VerifySort(nums, 0, nums.size() - 1);
+}
+
 bool Utils::VerifySort(std::vector<int>& nums, int begin, int end) {
     for (int i = begin + 1; i <= end; i++) {
         if (nums[i] < nums[i - 1]) {
             return false;
         }
     }
-
     return true;
 }
 

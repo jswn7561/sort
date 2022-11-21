@@ -200,14 +200,27 @@ void BigValueSort::Run(){
     vector<string> v3 = v0;
     vector<string> v4 = v0;
     vector<string> v5 = v0;
+    printf("The time consuming of sorting \033[0m\033[1;31m%d\033[0m numbers:\n", DataNum);
+    clock_t startTime, endTime;
+    startTime = clock();
     // 选择排序
     BigValueSort::SelectSort(v1);
+    endTime = clock();
+    printf("Select sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False");
     // 归并排序
     BigValueSort::MergeSort(v2);
+    endTime = clock();
+    printf("Merge sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False");
     // 快速排序
     BigValueSort::QuickSort(v3);
+    endTime = clock();
+    printf("Quick sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False");
     // 希尔排序
     BigValueSort::ShellSort(v4);
+    endTime = clock();
+    printf("Shell sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False"); 
     // 基数排序
     BigValueSort::RadixSort(v5);
+    endTime = clock();
+    printf("Radix sort: \033[0m\033[1;33m%fs\033[0m, validation results: \033[0m\033[1;32m%s\033[0m\n", (double) (endTime - startTime) / CLOCKS_PER_SEC, Utils::VerifySort(v1) ? "True" : "False");  
 }
