@@ -3,7 +3,7 @@
 #include "Utils.h"
 
 // 字符串比较：如果v[i] > v[j], 返回true
-bool compare(std::vector<string>& v, int i, int j){
+bool Utils::compare(std::vector<std::string>& v, int i, int j){
     int i_len = v[i].length(), j_len = v[j].length();
     // 判断正负号
     // 若v[i]为正数, v[j]为负数
